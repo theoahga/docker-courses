@@ -1,0 +1,32 @@
+name: deploy_ansible
+
+on:
+    workflow_run:
+        workflows: [publish_docker]
+        types:
+            - completed
+        branches:
+            - main
+
+jobs:
+    deploy:
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+        runs-on: ubuntu-22.04
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4.1.1
+
+            - name: Run playbook
+              uses: dawidd6/action-ansible-playbook@v2
+              with:
+                  playbook: ansible/books/deploy.yml
+                  # Optional, SSH private key
+                  key: ${{secrets.SSH_PRIVATE_KEY}}
+                  # Optional, literal inventory file contents
+                  inventory: ansible/inventories/setup.yml
+                  # Optional, encrypted vault password
+                  vault_password: ${{secrets.VAULT_PASSWORD}}
+                  options: |
+                      -u ${{secrets.SSH_USER}}
+                      --verbose

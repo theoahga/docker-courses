@@ -1,0 +1,8 @@
+- name: Create the front container
+  community.docker.docker_container:
+    name: front
+    image: "theoahga/my-front:1.1"
+    networks:
+      - name: app-network
+    ports:
+      -  80:80

@@ -1,0 +1,10 @@
+- name: Create the backend container
+  community.docker.docker_container:
+    name: backend-advanced
+    image: "theoahga/my-backend:latest"
+    networks:
+      - name: app-network
+    env:
+        DBURL: "{{ DB_URL }}"
+        DBUSER: "{{ DB_USER }}" 
+        DBPWD: "{{ DB_PWD }}" 

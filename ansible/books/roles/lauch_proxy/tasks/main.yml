@@ -1,0 +1,8 @@
+- name: Create the httpd container
+  community.docker.docker_container:
+    name: http
+    image: "theoahga/my-http:latest"
+    networks:
+      - name: app-network
+    ports:
+      - 8080:80

@@ -1,0 +1,8 @@
+- name: Create the postgres container
+  community.docker.docker_container:
+    name: postgres
+    image: "theoahga/my-database:latest"
+    networks:
+      - name: app-network
+    volumes:
+      - data:/data

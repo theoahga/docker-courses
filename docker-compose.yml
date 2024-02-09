@@ -1,0 +1,39 @@
+version: '3.7'
+
+services:
+    backend:
+        container_name: backend
+        image: theoahga/my-backend:latest
+        networks:
+          - app-network 
+        depends_on:
+          - database
+        environment:
+          - DBURL=jdbc:postgresql://postgres:5432/postgres
+          - DBUSER=postgres
+          - DBPWD=postgres
+
+    database:
+        container_name: postgres
+        image: theoahga/my-database:latest
+        networks:
+          - app-network 
+        volumes:
+          - ./data:/app/
+
+    front:
+        container_name: frontend
+        image: theoahga/my-front:1.1
+        networks:
+          - app-network 
+        ports:
+          - 8041:80
+
+    httpd:
+        container_name: apache
+        image: theoahga/http:latest
+        networks:
+          - app-network 
+
+networks:
+  app-network:
